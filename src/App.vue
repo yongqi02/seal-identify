@@ -44,6 +44,9 @@ onMounted(() => {
 				top: 0,
 				left: 0
 			});
+			i.filters.push(new fabric.Image.filters.Contrast({
+				contrast: 0.5
+			}));
 			i.filters.push(new fabric.Image.filters.RemoveColor({
 				distance: 0.5
 			}));
