@@ -1,47 +1,78 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue';
-import TheWelcome from './components/TheWelcome.vue';
+// import HelloWorld from './components/HelloWorld.vue';
+// import TheWelcome from './components/TheWelcome.vue';
+import { fabric } from 'fabric';
+import {onMounted} from 'vue';
+import img from './assets/印章1.jpg';
+
+function download() {
+	const canvas = document.querySelector('#canvas');
+	// const dataURL = canvas.toDataURL({
+	// 	width: canvas.width,
+	// 	height: canvas.height,
+	// 	left: 0,
+	// 	top: 0,
+	// 	format: 'png',
+	// });
+	const preview = document.querySelector('#preview');
+	preview.width = canvas.width;
+	preview.height = canvas.height;
+	const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+	preview.getContext('2d').putImageData(imageData, 0, 0);
+	const link = document.createElement('a');
+	link.download = 'canvas.png';
+	// link.href = dataURL;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
+
+onMounted(() => {
+	new Promise(resolve => {
+		const canvas = new fabric.Canvas('canvas', {
+			width: 1000,
+			height: 1000,
+			background: '#EEE'
+		});
+		const image = new Image();
+		image.src = img;
+		image.onload = () => {
+			const i = new fabric.Image(image, {
+				scaleX: 0.5,
+				scaleY: 0.5,
+				angle: 0,
+				top: 0,
+				left: 0
+			});
+			i.filters.push(new fabric.Image.filters.RemoveColor({
+				distance: 0.5
+			}));
+			i.filters.push(new fabric.Image.filters.Saturation({
+				saturation: 1
+			}));
+			i.applyFilters();
+			canvas.add(i);
+			const result = canvas.toObject();
+			console.log(result);
+			resolve();
+		};
+	}).then(() => {
+		setTimeout(() => {
+			download();
+		}, 0);
+	});
+
+
+});
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+	<input type="file" />
+	<img src="" alt="" />
+	<canvas id="canvas"></canvas>
+	<canvas id="preview"></canvas>
+	<button @click="download">下载</button>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>
