@@ -1,19 +1,10 @@
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue';
-// import TheWelcome from './components/TheWelcome.vue';
 import { fabric } from 'fabric';
 import {onMounted} from 'vue';
 import img from './assets/印章1.jpg';
 
 function download() {
 	const canvas = document.querySelector('#canvas');
-	// const dataURL = canvas.toDataURL({
-	// 	width: canvas.width,
-	// 	height: canvas.height,
-	// 	left: 0,
-	// 	top: 0,
-	// 	format: 'png',
-	// });
 	const preview = document.querySelector('#preview');
 	preview.width = canvas.width;
 	preview.height = canvas.height;

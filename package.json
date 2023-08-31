@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@types/fabric": "^5.3.3",
     "fabric": "^5.3.0",
     "vue": "^3.3.4"
   },
